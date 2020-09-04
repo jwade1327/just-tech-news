@@ -44,9 +44,9 @@ User.init(
             }
         }
     },
-    {
-        // TABLE COLUMN DEFINITIONS GO HERE
-    },
+    // {
+    //     // TABLE COLUMN DEFINITIONS GO HERE
+    // },
     {
         // TABLE CONFIGURATION OPTIONS GO HERE (https://sequelize.org/v5/manual/models-definition.html#configuration))
 
