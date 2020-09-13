@@ -4,19 +4,15 @@ const { Post, User, Vote, Comment } = require('../../models');
 
 // get all users
 router.get('/', (req, res) => {
-    console.log('======================');
     Post.findAll({
-            // Query configuration
-            attributes: [
+        order: [['created_at', 'DESC']],
+        attributes: [
             'id', 
             'post_url', 
             'title', 
             'created_at',
             [sequelize.literal('(SELECT COUNT(*) FROM vote WHERE post.id = vote.post_id)'), 'vote_count']
         ],
-            order: [
-                ['created_at', 'DESC']
-            ],
             include: [
                 {
                     model: Comment,
@@ -68,9 +64,7 @@ router.get('/:id', (req, res) => {
         })
         .then(dbPostData => {
             if (!dbPostData) {
-                res.status(404).json({
-                    message: 'No post found with this id'
-                });
+                res.status(404).json({ message: 'No post found with this id' });
                 return;
             }
             res.json(dbPostData);
@@ -84,10 +78,10 @@ router.get('/:id', (req, res) => {
 router.post('/', (req, res) => {
     // expects {title: 'Taskmaster goes public!', post_url: 'https://taskmaster.com/press', user_id: 1}
     Post.create({
-            title: req.body.title,
-            post_url: req.body.post_url,
-            user_id: req.body.user_id
-        })
+        title: req.body.title,
+        post_url: req.body.post_url,
+        user_id: req.body.user_id
+    })
         .then(dbPostData => res.json(dbPostData))
         .catch(err => {
             console.log(err);
@@ -101,7 +95,7 @@ route.put('/upvote', (req,res) => {
         .then(updatedVoteData => res.json(updatedVoteData))
         .catch(err => {
             console.log(err);
-            res.status(400).json(err);
+            res.status(500).json(err);
         });
 });
 
@@ -118,9 +112,7 @@ router.put('/:id', (req, res) => {
     )
         .then(dbPostData => {
             if (!dbPostData) {
-                res.status(404).json({
-                    message: 'No post found with this id'
-                });
+                res.status(404).json({ message: 'No post found with this id' });                
                 return;
             }
             res.json(dbPostData);
@@ -139,9 +131,7 @@ router.delete('/:id', (req, res) => {
         })
         .then(dbPostData => {
             if (!dbPostData) {
-                res.status(404).json({
-                    message: 'No post found with this id'
-                });
+                res.status(404).json({ message: 'No post found with this id' });
                 return;
             }
             res.json(dbPostData);
